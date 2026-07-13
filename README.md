@@ -1,36 +1,115 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+COAN Website Platform
+=====================
 
-## Getting Started
+This project implements the Canadian Observers and Activists Network website:
+public-service pages, volunteer matching forms, community posts, event
+registration surfaces, resource discovery, an admin dashboard, a Supabase schema,
+and a FastAPI/LangGraph chatbot backend foundation.
 
-First, run the development server:
+Frontend
+--------
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open http://localhost:3000.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Visual System
+-------------
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+The MVP is styled as a polished Canadian nonprofit/public-service platform. The
+visual direction is informed by Settlement.org, MOSAIC BC, YMCA Canada, United
+Way Canada, and Canada.ca service pages without copying their branding.
 
-## Learn More
+Current visual upgrades include:
 
-To learn more about Next.js, take a look at the following resources:
+- Semantic two-column homepage hero with real HTML copy, CTA links, trust
+  indicators, and local community image assets.
+- COAN horizontal logo asset rendered with `next/image`; the temporary logo
+  export should be replaced by a transparent SVG or PNG from the design team.
+- Sticky responsive header with active navigation states and a clear
+  `中文即将上线` language placeholder.
+- `next/font` typography using Inter with Noto Sans SC fallback.
+- Impact-style platform indicators.
+- Icon-led service cards using `lucide-react`.
+- Step-by-step "How COAN helps" section.
+- Richer resource and event cards with metadata and clear CTAs.
+- Route-ready resource, event, and community cards for future detail pages.
+- Public-service chatbot preview with disclaimer language.
+- Volunteer recruitment banner.
+- Trust and safety section for nonprofit credibility.
+- Restrained motion system with scroll reveal, animated platform indicators,
+  page fade transitions, mobile menu animation, and reduced-motion support.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Component Strategy
+------------------
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Reusable UI primitives live in `components/ui.tsx`, including containers,
+sections, buttons, notices, status badges, and image panels. The logo lives in
+`components/brand-logo.tsx`. Content and demo data are centralized under
+`lib/content.ts` and `lib/mock-data/` so pages do not hardcode records.
 
-## Deploy on Vercel
+Motion components live in `components/motion/` and are intentionally small:
+CSS transitions cover simple hover/focus feedback, while IntersectionObserver
+drives restrained scroll reveal, counters, chatbot preview sequencing, and
+light parallax. No animation dependency is required for the MVP.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Accessibility Approach
+----------------------
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The interface uses semantic page sections, visible labels, keyboard focus
+states, high-contrast text, restrained motion, and minimum 44px action targets
+where practical. The design avoids color-only meaning and keeps chatbot,
+volunteer, and community experiences clear about consent and information
+boundaries.
+
+Animations respect `prefers-reduced-motion: reduce`. Reveal content is visible
+by default before JavaScript enhancement, so information remains accessible if
+client-side motion fails to run.
+
+Image and Content Replacement Plan
+----------------------------------
+
+The MVP uses local demo images in `public/`:
+
+- `coan-hero-banner.png`
+- `coan-workshop.png`
+- `coan-planning.png`
+- `coan-community-event.png`
+- `coan-volunteers.png`
+
+In production, replace these with consent-cleared COAN photography, partner
+event images, or commissioned illustrations. Keep filenames stable or update the
+image references in the relevant page/components.
+
+The current logo file includes extra whitespace and is treated as a temporary
+demo asset. Replace it with a transparent SVG or optimized PNG while preserving
+the accessible alt text and `object-contain` rendering behavior.
+
+Backend
+-------
+
+```bash
+cd backend
+python -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+uvicorn main:app --reload
+```
+
+Environment variables are documented in `.env.example`.
+
+Database
+--------
+
+Use `supabase/schema.sql` as the starting migration for profiles, volunteer
+applications, mentor and mentee profiles, manual matches, posts, comments,
+events, registrations, resources, and consent-based chatbot logs.
+
+Notes
+-----
+
+The frontend is dependency-light and content-driven so the public website can be
+demoed immediately while Supabase Auth, shadcn/ui, and live chatbot calls are
+integrated in later development.
