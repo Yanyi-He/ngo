@@ -18,10 +18,6 @@ Open http://localhost:3000.
 Visual System
 -------------
 
-The MVP is styled as a polished Canadian nonprofit/public-service platform. The
-visual direction is informed by Settlement.org, MOSAIC BC, YMCA Canada, United
-Way Canada, and Canada.ca service pages without copying their branding.
-
 Current visual upgrades include:
 
 - Semantic two-column homepage hero with real HTML copy, CTA links, trust

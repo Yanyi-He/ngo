@@ -6,10 +6,12 @@ import {
   mentorProfiles,
   volunteerProfiles,
 } from "@/lib/content";
-import { SectionHeader } from "@/components/ui";
-
 export const metadata = {
   title: "Admin Dashboard",
+  robots: {
+    index: false,
+    follow: false,
+  },
 };
 
 const applicationRows = [
@@ -41,11 +43,22 @@ export default function AdminPage() {
     <>
       <section className="border-b border-line bg-white">
         <div className="mx-auto max-w-7xl px-4 py-14 sm:px-6 lg:px-8">
-          <SectionHeader
-            eyebrow="Admin"
-            title="COAN content and operations dashboard"
-            description="A management workspace for reviewing volunteer applications, publishing resources, coordinating events, moderating community posts, and monitoring consent-based chatbot activity."
-          />
+          <p className="text-sm font-semibold uppercase tracking-normal text-brand-red">
+            Admin
+          </p>
+          <h1 className="mt-4 text-3xl font-semibold leading-tight text-brand-blue sm:text-4xl lg:text-5xl">
+            COAN content and operations dashboard
+          </h1>
+          <p className="mt-5 max-w-3xl text-base leading-7 text-slate-700">
+            Protected-area placeholder for future authenticated tools: resource
+            management, events, volunteer applications, community moderation,
+            and consent-aware chatbot analytics.
+          </p>
+          <div className="notice-surface mt-6 rounded-md border border-warning/40 bg-amber-50 p-5 text-sm leading-6 text-slate-800">
+            This frontend placeholder is not an authentication boundary. Backend
+            access control, role permissions, and audit logging should be added
+            before operational use.
+          </div>
         </div>
       </section>
 
@@ -59,7 +72,7 @@ export default function AdminPage() {
           ].map(([label, value]) => (
             <div
               key={label}
-              className="rounded-md border border-line bg-white p-5"
+              className="card-surface rounded-md border border-line bg-white p-5 shadow-sm"
             >
               <p className="text-sm font-semibold text-slate-600">{label}</p>
               <p className="mt-3 text-3xl font-semibold text-brand-blue">
@@ -144,7 +157,7 @@ function AdminPanel({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-md border border-line bg-white p-6">
+    <section className="card-surface rounded-md border border-line bg-white p-6 shadow-sm">
       <h2 className="text-xl font-semibold text-brand-blue">{title}</h2>
       <div className="mt-5">{children}</div>
     </section>

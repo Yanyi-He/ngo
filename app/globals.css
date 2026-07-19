@@ -8,8 +8,24 @@
   --brand-blue-strong: #0b2745;
   --brand-blue-link: #1c527f;
   --brand-blue-soft: #eef5fb;
+  --brand-teal: #2d9c95;
+  --brand-teal-soft: #e4f4f2;
   --brand-red: #b3413b;
   --brand-red-soft: #fbf1f0;
+  --surface-default: #f7f9fc;
+  --surface-subtle: #eef3f8;
+  --surface-brand: #0b2745;
+  --surface-accent: #eef5fb;
+  --text-primary: #172033;
+  --text-secondary: #3d4b5f;
+  --text-muted: #66768a;
+  --border-default: #d8e1ea;
+  --border-strong: #9fb2c5;
+  --action-primary: #123a63;
+  --action-secondary: #1c527f;
+  --focus-ring: #b3413b;
+  --shadow-subtle: 0 1px 2px rgb(23 32 51 / 0.06);
+  --shadow-interactive: 0 8px 20px rgb(23 32 51 / 0.08);
   --success: #2f6f4e;
   --warning: #a8660f;
   --error: #b42318;
@@ -33,6 +49,8 @@
   --color-brand-blue-strong: var(--brand-blue-strong);
   --color-brand-blue-link: var(--brand-blue-link);
   --color-brand-blue-soft: var(--brand-blue-soft);
+  --color-brand-teal: var(--brand-teal);
+  --color-brand-teal-soft: var(--brand-teal-soft);
   --color-brand-red: var(--brand-red);
   --color-brand-red-soft: var(--brand-red-soft);
   --color-success: var(--success);
@@ -84,7 +102,121 @@ select {
 }
 
 .motion-button:active {
-  transform: translateY(0) scale(0.985);
+  transform: translateY(1px) scale(0.98);
+}
+
+.brand-logo {
+  width: clamp(10rem, 18vw, 15rem);
+}
+
+.nav-link::before {
+  content: "";
+  position: absolute;
+  left: 0.85rem;
+  right: 0.85rem;
+  bottom: 0.45rem;
+  height: 2px;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--brand-teal), var(--brand-red));
+  opacity: 0;
+  transform: scaleX(0.36);
+  transform-origin: left center;
+  transition:
+    opacity var(--motion-default) var(--ease-standard),
+    transform var(--motion-default) var(--ease-standard);
+}
+
+.nav-link::after {
+  content: "";
+  position: absolute;
+  left: 0.55rem;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--brand-teal);
+  opacity: 0;
+  transform: translateY(-50%) scale(0.5);
+  transition:
+    opacity var(--motion-default) var(--ease-standard),
+    transform var(--motion-default) var(--ease-standard);
+}
+
+.nav-link:hover::before,
+.nav-link--active::before {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.nav-link--active::after {
+  opacity: 1;
+  transform: translateY(-50%) scale(1);
+}
+
+.eyebrow {
+  letter-spacing: 0;
+}
+
+.page-hero::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, rgb(18 58 99 / 0.08) 1px, transparent 1px),
+    linear-gradient(180deg, rgb(18 58 99 / 0.06) 1px, transparent 1px);
+  background-size: 44px 44px;
+  mask-image: linear-gradient(90deg, transparent, black 14%, black 78%, transparent);
+  opacity: 0.45;
+}
+
+.page-hero::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--brand-blue), var(--brand-teal), var(--brand-red));
+  opacity: 0.82;
+}
+
+.section-shell {
+  position: relative;
+}
+
+.card-surface {
+  position: relative;
+  overflow: hidden;
+}
+
+.card-surface::before,
+.notice-surface::before,
+.image-panel::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 3px;
+  background: linear-gradient(90deg, var(--brand-blue), var(--brand-teal));
+  opacity: 0;
+  transition: opacity var(--motion-default) var(--ease-standard);
+}
+
+.card-surface:hover::before,
+.group:hover .card-surface::before {
+  opacity: 1;
+}
+
+.notice-surface,
+.image-panel {
+  position: relative;
+}
+
+.image-panel {
+  box-shadow: 0 12px 30px rgb(23 32 51 / 0.08);
+}
+
+@media (max-width: 639px) {
+  .brand-logo {
+    width: 10.75rem;
+  }
 }
 
 .motion-card {

@@ -51,6 +51,9 @@ export const footerSections = [
     links: [
       { href: "/privacy", label: "Privacy" },
       { href: "/terms", label: "Terms" },
+      { href: "/accessibility", label: "Accessibility" },
+      { href: "/community-guidelines", label: "Community Guidelines" },
+      { href: "/ai-disclaimer", label: "AI Disclaimer" },
       { href: "mailto:hello@coan-canada.org", label: "Contact" },
     ],
   },

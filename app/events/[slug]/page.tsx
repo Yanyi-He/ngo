@@ -38,7 +38,7 @@ export default async function EventDetailPage({
       <Section>
         <Container>
           <div className="grid gap-8 lg:grid-cols-[0.85fr_1.15fr]">
-            <aside className="rounded-md border border-line bg-white p-6">
+            <aside className="card-surface rounded-md border border-line bg-white p-6 shadow-sm">
               <h2 className="text-xl font-semibold text-brand-blue">Details</h2>
               <dl className="mt-5 grid gap-4 text-sm">
                 <div>
@@ -64,7 +64,7 @@ export default async function EventDetailPage({
               </dl>
             </aside>
 
-            <form className="rounded-md border border-line bg-white p-6">
+            <form className="card-surface rounded-md border border-line bg-white p-6 shadow-sm">
               <h2 className="text-xl font-semibold text-brand-blue">
                 Register for this event
               </h2>
