@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import type { ReactNode } from "react";
+import { ArrowRight } from "lucide-react";
 import { Reveal } from "@/components/motion/reveal";
 
 type LinkButtonProps = {
@@ -18,7 +19,7 @@ export function LinkButton({
     primary:
       "border-brand-blue bg-brand-blue text-white shadow-sm hover:-translate-y-0.5 hover:bg-brand-blue-strong hover:shadow-md",
     secondary:
-      "border-brand-blue bg-white text-brand-blue hover:-translate-y-0.5 hover:bg-brand-blue-soft hover:shadow-sm",
+      "border-brand-blue/30 bg-white text-brand-blue hover:-translate-y-0.5 hover:bg-brand-blue-soft hover:shadow-sm",
     subtle:
       "border-line bg-white text-foreground hover:-translate-y-0.5 hover:border-brand-blue hover:text-brand-blue",
   };
@@ -26,9 +27,15 @@ export function LinkButton({
   return (
     <Link
       href={href}
-      className={`motion-button inline-flex min-h-11 items-center justify-center rounded-md border px-5 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red ${variants[variant]}`}
+      className={`group motion-button inline-flex min-h-11 items-center justify-center gap-2 rounded-md border px-5 py-2.5 text-sm font-semibold focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red ${variants[variant]}`}
     >
       {children}
+      {variant === "primary" ? (
+        <ArrowRight
+          className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5"
+          aria-hidden="true"
+        />
+      ) : null}
     </Link>
   );
 }
@@ -41,8 +48,10 @@ type ButtonProps = {
 
 export function Button({ children, type = "button", variant = "primary" }: ButtonProps) {
   const variants = {
-    primary: "border-brand-blue bg-brand-blue text-white hover:bg-brand-blue-strong",
-    secondary: "border-brand-blue bg-white text-brand-blue hover:bg-brand-blue-soft",
+    primary:
+      "border-brand-blue bg-brand-blue text-white shadow-sm hover:bg-brand-blue-strong hover:shadow-md",
+    secondary:
+      "border-brand-blue/30 bg-white text-brand-blue hover:bg-brand-blue-soft",
   };
 
   return (
@@ -79,16 +88,17 @@ export function Section({
   tone = "default",
 }: {
   children: ReactNode;
-  tone?: "default" | "white" | "muted";
+  tone?: "default" | "white" | "muted" | "accent";
 }) {
   const tones = {
     default: "bg-background",
     white: "border-y border-line bg-white",
     muted: "border-y border-line bg-muted",
+    accent: "border-y border-line bg-brand-blue-soft",
   };
 
   return (
-    <section className={`${tones[tone]} py-14 sm:py-16 lg:py-20`}>
+    <section className={`section-shell ${tones[tone]} py-14 sm:py-16 lg:py-20`}>
       {children}
     </section>
   );
@@ -111,7 +121,7 @@ export function SectionHeader({
     <div className="flex flex-col gap-5 md:flex-row md:items-end md:justify-between">
       <div className="max-w-3xl">
         {eyebrow ? (
-          <p className="mb-3 text-sm font-semibold uppercase tracking-normal text-brand-red">
+          <p className="eyebrow mb-3 text-sm font-semibold uppercase tracking-normal text-brand-red">
             {eyebrow}
           </p>
         ) : null}
@@ -143,13 +153,13 @@ export function PageHero({
   secondaryAction?: ReactNode;
 }) {
   return (
-    <section className="border-b border-line bg-white py-12 sm:py-14">
+    <section className="page-hero relative overflow-hidden border-b border-line bg-white py-12 sm:py-14">
       <Container>
-        <Reveal className="max-w-4xl">
-          <p className="text-sm font-semibold uppercase tracking-normal text-brand-red">
+        <Reveal className="relative z-10 max-w-4xl">
+          <p className="eyebrow text-sm font-semibold uppercase tracking-normal text-brand-red">
             {eyebrow}
           </p>
-          <h1 className="mt-4 text-3xl font-semibold leading-tight text-brand-blue sm:text-4xl">
+          <h1 className="mt-4 text-3xl font-semibold leading-tight text-brand-blue sm:text-4xl lg:text-5xl">
             {title}
           </h1>
           <p className="mt-5 max-w-3xl text-lg leading-8 text-slate-700">
@@ -185,7 +195,7 @@ export function InfoCard({
   actionLabel,
 }: InfoCardProps) {
   const content = (
-    <article className="motion-card flex h-full flex-col rounded-md border border-line bg-white p-6 shadow-sm hover:border-brand-blue hover:shadow-md group-hover:border-brand-blue group-hover:shadow-md">
+    <article className="motion-card card-surface flex h-full flex-col rounded-md border border-line bg-white p-6 shadow-sm hover:border-brand-blue hover:shadow-md group-hover:border-brand-blue group-hover:shadow-md">
       {meta ? (
         <p className="mb-3 text-sm font-semibold text-brand-red">{meta}</p>
       ) : null}
@@ -197,8 +207,9 @@ export function InfoCard({
         </p>
       ) : null}
       {href && actionLabel ? (
-        <span className="mt-auto pt-5 text-sm font-semibold text-brand-blue group-hover:text-brand-blue-strong">
+        <span className="mt-auto inline-flex items-center gap-2 pt-5 text-sm font-semibold text-brand-blue group-hover:text-brand-blue-strong">
           {actionLabel}
+          <ArrowRight className="h-4 w-4 transition-transform duration-200 group-hover:translate-x-0.5" aria-hidden="true" />
         </span>
       ) : null}
     </article>
@@ -230,7 +241,7 @@ export function ImagePanel({
   priority?: boolean;
 }) {
   return (
-    <figure className="motion-image-frame overflow-hidden rounded-lg border border-line bg-white shadow-md">
+    <figure className="motion-image-frame image-panel overflow-hidden rounded-lg border border-line bg-white shadow-md">
       <div className="relative aspect-[16/10] overflow-hidden">
         <Image
           src={src}
@@ -266,7 +277,7 @@ export function Notice({
   };
 
   return (
-    <aside className={`rounded-md border p-5 ${tones[tone]}`}>
+    <aside className={`notice-surface rounded-md border p-5 ${tones[tone]}`}>
       <h2 className="text-base font-semibold text-brand-blue">{title}</h2>
       <div className="mt-2 text-sm leading-6">{children}</div>
     </aside>
@@ -275,7 +286,7 @@ export function Notice({
 
 export function StatusBadge({ children }: { children: ReactNode }) {
   return (
-    <span className="inline-flex rounded-md bg-muted px-2.5 py-1 text-xs font-semibold uppercase text-brand-blue">
+    <span className="inline-flex rounded-md border border-brand-blue/10 bg-muted px-2.5 py-1 text-xs font-semibold uppercase text-brand-blue">
       {children}
     </span>
   );
@@ -297,7 +308,7 @@ export function Field({
   options,
 }: FieldProps) {
   const inputClass =
-    "mt-2 w-full rounded-md border border-line bg-white px-3 py-2.5 text-sm text-foreground outline-none transition duration-200 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 disabled:cursor-not-allowed disabled:bg-muted disabled:text-slate-500";
+    "mt-2 w-full rounded-md border border-line bg-white px-3 py-2.5 text-sm text-foreground outline-none transition duration-200 placeholder:text-slate-400 focus:border-brand-blue focus:ring-2 focus:ring-brand-blue/20 disabled:cursor-not-allowed disabled:bg-muted disabled:text-slate-500";
 
   return (
     <label className="block text-sm font-semibold text-slate-800">

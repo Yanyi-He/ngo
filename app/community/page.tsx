@@ -23,6 +23,9 @@ export const metadata = {
 };
 
 export default function CommunityPage() {
+  const featuredPost = communityPosts[0];
+  const remainingPosts = communityPosts.slice(1);
+
   return (
     <>
       <PageHero
@@ -44,39 +47,82 @@ export default function CommunityPage() {
 
       <Section tone="white">
         <Container>
-          <div className="grid gap-8 lg:grid-cols-[1fr_380px]">
-            <div>
-              <SectionHeader title="Recent community posts" />
-              <div className="mt-6 grid gap-4">
-                {communityPosts.map((post) => (
+          <div className="grid min-w-0 gap-8 lg:grid-cols-[minmax(0,1fr)_380px]">
+            <div className="min-w-0">
+              <SectionHeader
+                title="Moderated discussion board"
+                description="Posts are organized for practical questions and careful resource sharing. The board avoids popularity-driven ranking."
+              />
+              <div className="mt-6 flex max-w-full gap-2 overflow-x-auto pb-2">
+                {postCategories.slice(0, 8).map((category) => (
+                  <button
+                    key={category}
+                    type="button"
+                    className="motion-button shrink-0 rounded-md border border-line bg-white px-3 py-2 text-sm font-semibold text-brand-blue hover:bg-brand-blue-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red"
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+
+              <Link
+                href={communityPostPath(featuredPost.title)}
+                className="card-surface mt-6 block rounded-md border border-line bg-white p-6 shadow-sm transition hover:border-brand-blue hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red"
+              >
+                <div className="flex flex-wrap items-center gap-2">
+                  <StatusBadge>{featuredPost.category}</StatusBadge>
+                  <StatusBadge>{featuredPost.status}</StatusBadge>
+                </div>
+                <h2 className="mt-4 text-2xl font-semibold text-brand-blue">
+                  {featuredPost.title}
+                </h2>
+                <p className="mt-3 text-sm leading-6 text-slate-700">
+                  {featuredPost.excerpt}
+                </p>
+                <p className="mt-4 text-sm text-slate-600">
+                  Posted by {featuredPost.author}. {featuredPost.replies} comments.
+                </p>
+              </Link>
+
+              <div className="mt-5 grid gap-3">
+                {remainingPosts.slice(0, 9).map((post) => (
                   <Link
                     key={post.title}
                     href={communityPostPath(post.title)}
-                    className="motion-card group block rounded-md border border-line bg-white p-5 hover:border-brand-blue hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red"
+                    className="motion-card group grid min-w-0 gap-4 rounded-md border border-line bg-white p-5 hover:border-brand-blue hover:shadow-sm focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red md:grid-cols-[150px_minmax(0,1fr)_auto]"
                   >
-                    <div className="flex flex-wrap items-center gap-2">
+                    <div className="flex flex-wrap content-start gap-2">
                       <StatusBadge>{post.category}</StatusBadge>
                       <StatusBadge>{post.status}</StatusBadge>
                     </div>
-                    <h2 className="mt-3 text-xl font-semibold text-brand-blue group-hover:text-brand-blue-strong">
-                      {post.title}
-                    </h2>
-                    <p className="mt-3 text-sm leading-6 text-slate-700">
-                      {post.excerpt}
-                    </p>
-                    <p className="mt-3 text-sm text-slate-600">
-                      Posted by {post.author} | {post.replies} comments
-                    </p>
-                    <span className="mt-4 inline-flex text-sm font-semibold text-brand-blue underline">
-                      View discussion
+                    <div>
+                      <h3 className="break-words font-semibold text-brand-blue group-hover:text-brand-blue-strong">
+                        {post.title}
+                      </h3>
+                      <p className="mt-2 text-sm leading-6 text-slate-700">
+                        {post.excerpt}
+                      </p>
+                      <p className="mt-3 text-sm text-slate-600">
+                        Posted by {post.author}. {post.replies} comments.
+                      </p>
+                    </div>
+                    <span className="text-sm font-semibold text-brand-blue underline">
+                      View
                     </span>
                   </Link>
                 ))}
               </div>
+              <div className="notice-surface mt-5 rounded-md border border-line bg-white p-5 text-sm leading-6 text-slate-700">
+                <h3 className="font-semibold text-brand-blue">Empty state</h3>
+                <p className="mt-2">
+                  When no posts match a filter, COAN should show related
+                  categories, guidelines, and a clear path to submit a question.
+                </p>
+              </div>
             </div>
 
-            <aside className="grid gap-6">
-              <section className="rounded-md border border-line bg-white p-6">
+            <aside className="grid min-w-0 gap-6">
+              <section className="card-surface rounded-md border border-line bg-white p-6 shadow-sm">
                 <h2 className="text-xl font-semibold text-brand-blue">
                   Create a post
                 </h2>
@@ -96,7 +142,7 @@ export default function CommunityPage() {
                 </p>
               </section>
 
-              <section className="rounded-md border border-line bg-white p-6">
+              <section className="card-surface rounded-md border border-line bg-white p-6 shadow-sm">
                 <h2 className="text-xl font-semibold text-brand-blue">
                   Community guidelines
                 </h2>

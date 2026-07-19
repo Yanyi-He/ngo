@@ -8,6 +8,10 @@ export const designTokens = {
         100: "#DDEAF6",
         50: "#EEF5FB",
       },
+      teal: {
+        700: "#2D9C95",
+        50: "#E4F4F2",
+      },
       red: {
         700: "#B3413B",
         100: "#F6DFDD",
@@ -29,6 +33,26 @@ export const designTokens = {
       warning: "#A8660F",
       error: "#B42318",
       info: "#1C527F",
+    },
+    surface: {
+      default: "#F7F9FC",
+      subtle: "#EEF3F8",
+      brand: "#0B2745",
+      accent: "#EEF5FB",
+    },
+    text: {
+      primary: "#172033",
+      secondary: "#3D4B5F",
+      muted: "#66768A",
+    },
+    border: {
+      default: "#D8E1EA",
+      strong: "#9FB2C5",
+    },
+    action: {
+      primary: "#123A63",
+      secondary: "#1C527F",
+      focusRing: "#B3413B",
     },
   },
   typography: {
@@ -85,6 +109,8 @@ export const designTokens = {
   },
   shadow: {
     none: "none",
+    subtle: "0 1px 2px rgb(23 32 51 / 0.06)",
+    interactive: "0 8px 20px rgb(23 32 51 / 0.08)",
     sm: "0 1px 2px rgb(23 32 51 / 0.06)",
     md: "0 8px 20px rgb(23 32 51 / 0.08)",
   },

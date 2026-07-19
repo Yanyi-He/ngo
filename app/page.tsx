@@ -14,7 +14,6 @@ import {
 } from "lucide-react";
 import { AmbientBackground } from "@/components/motion/ambient-background";
 import { AnimatedNumber } from "@/components/motion/animated-number";
-import { AnimatedPhrase } from "@/components/motion/animated-phrase";
 import { ChatbotPreview } from "@/components/motion/chatbot-preview";
 import { ParallaxVisual } from "@/components/motion/parallax-visual";
 import { Reveal } from "@/components/motion/reveal";
@@ -52,13 +51,6 @@ const heroTrustIndicators = [
   { label: "Official-source oriented", Icon: ShieldCheck },
 ];
 
-const heroPhrases = [
-  "Understand Canadian systems",
-  "Access trusted resources",
-  "Connect with your community",
-  "Participate with confidence",
-];
-
 export const metadata = {
   title: "Home",
   description:
@@ -71,51 +63,31 @@ export default function Home() {
       <section className="relative overflow-hidden border-b border-line bg-white">
         <AmbientBackground />
         <Container>
-          <div className="relative z-10 grid gap-10 py-12 sm:py-16 lg:grid-cols-[1.02fr_0.98fr] lg:items-center lg:py-20">
+          <div className="relative z-10 grid gap-10 py-10 sm:py-14 lg:grid-cols-[0.95fr_1.05fr] lg:items-center lg:py-16">
             <div className="max-w-3xl">
               <Reveal as="p" direction="up" className="text-sm font-semibold uppercase tracking-normal text-brand-red">
                 Community-led newcomer support
               </Reveal>
               <Reveal as="div" delay={0.04}>
-                <h1 className="mt-4 text-4xl font-semibold leading-tight text-brand-blue sm:text-5xl">
-                  Helping newcomers understand Canada and build stronger
-                  community connections
+                <h1 className="mt-4 text-4xl font-semibold leading-tight text-brand-blue sm:text-5xl lg:text-6xl">
+                  Clear guidance for newcomer life in Canada
                 </h1>
               </Reveal>
               <Reveal as="p" delay={0.12} className="mt-6 max-w-2xl text-lg leading-8 text-slate-700">
-                COAN turns complex public information into clear, practical
-                guidance and creates opportunities for Chinese-speaking
-                newcomers, volunteers, students, and community members to learn
-                and connect.
+                COAN helps Chinese-speaking newcomers find practical resources,
+                community learning, volunteer support, and careful AI guidance.
               </Reveal>
-              <Reveal as="p" delay={0.18} className="mt-4 text-base font-semibold text-brand-blue">
-                <AnimatedPhrase phrases={heroPhrases} />
-              </Reveal>
-              <Reveal delay={0.24} className="mt-8 flex flex-col gap-3 sm:flex-row">
+              <Reveal delay={0.18} className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <LinkButton href="/resources">Explore resources</LinkButton>
                 <LinkButton href="/volunteer" variant="secondary">
-                  Join our volunteer network
+                  Join as a volunteer
                 </LinkButton>
               </Reveal>
-              <StaggerGroup
-                className="mt-8 flex flex-wrap gap-3"
-                interval={0.06}
-              >
-                {heroTrustIndicators.map(({ label, Icon }) => (
-                  <span
-                    key={label}
-                    className="inline-flex min-h-10 items-center gap-2 rounded-md border border-line bg-white px-3 py-2 text-sm font-semibold text-brand-blue shadow-sm"
-                  >
-                    <Icon className="h-4 w-4" aria-hidden="true" />
-                    {label}
-                  </span>
-                ))}
-              </StaggerGroup>
             </div>
 
-            <Reveal delay={0.28} direction="left">
+            <Reveal delay={0.22} direction="left">
               <ParallaxVisual>
-                <figure className="motion-image-frame relative overflow-hidden rounded-lg border border-line bg-white p-3 shadow-md">
+                <figure className="motion-image-frame image-panel relative overflow-hidden rounded-lg border border-line bg-white p-3 shadow-md">
                   <div className="relative aspect-[4/3] overflow-hidden rounded-md bg-muted">
                     <Image
                       src="/coan-volunteers.png"
@@ -130,20 +102,28 @@ export default function Home() {
                     Community connection, practical learning, and public-service
                     orientation in one platform.
                   </figcaption>
-                  <div className="absolute bottom-20 left-6 hidden max-w-60 rounded-md border border-line bg-white p-4 shadow-md sm:block">
-                    <p className="text-xs font-semibold uppercase text-brand-red">
-                      Platform indicator
-                    </p>
-                    <p className="mt-1 text-sm font-semibold leading-5 text-brand-blue">
-                      20+ prepared newcomer resource topics
-                    </p>
-                  </div>
                 </figure>
               </ParallaxVisual>
             </Reveal>
           </div>
         </Container>
       </section>
+
+      <Section tone="white">
+        <Container>
+          <StaggerGroup className="grid gap-3 md:grid-cols-3 lg:grid-cols-[1.15fr_0.95fr_0.9fr]" interval={0.06}>
+            {heroTrustIndicators.map(({ label, Icon }) => (
+              <div
+                key={label}
+                className="card-surface flex min-h-20 items-center gap-3 rounded-md border border-line bg-white p-4 shadow-sm"
+              >
+                <Icon className="h-5 w-5 shrink-0 text-brand-blue" aria-hidden="true" />
+                <p className="text-sm font-semibold text-brand-blue">{label}</p>
+              </div>
+            ))}
+          </StaggerGroup>
+        </Container>
+      </Section>
 
       <Section>
         <Container>
@@ -514,7 +494,7 @@ export default function Home() {
                 Chinese-speaking newcomers in Canada.
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <LinkButton href="/resources">Explore resources</LinkButton>
+                <LinkButton href="/resources">Browse resource library</LinkButton>
                 <LinkButton href="/community" variant="secondary">
                   Visit community
                 </LinkButton>

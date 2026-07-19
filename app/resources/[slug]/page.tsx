@@ -54,7 +54,7 @@ export default async function ResourceDetailPage({
 
       <Section>
         <Container width="content">
-          <article className="rounded-md border border-line bg-white p-6 shadow-sm sm:p-8">
+          <article className="card-surface rounded-md border border-line bg-white p-6 shadow-sm sm:p-8">
             <div className="flex flex-wrap gap-2">
               <StatusBadge>{resource.category}</StatusBadge>
               <StatusBadge>{resource.type}</StatusBadge>

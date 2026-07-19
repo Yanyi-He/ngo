@@ -2,11 +2,10 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Menu, X } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { ArrowRight, Menu, X } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { BrandLogo } from "@/components/brand-logo";
 import { navItems } from "@/lib/content";
-import { LinkButton } from "@/components/ui";
 
 function isActivePath(pathname: string, href: string) {
   if (href === "/") {
@@ -21,6 +20,13 @@ export function SiteHeader() {
   const [isOpen, setIsOpen] = useState(false);
   const menuButtonRef = useRef<HTMLButtonElement | null>(null);
 
+  const closeMobileMenu = useCallback((returnFocus = false) => {
+    setIsOpen(false);
+    if (returnFocus) {
+      window.requestAnimationFrame(() => menuButtonRef.current?.focus());
+    }
+  }, []);
+
   useEffect(() => {
     if (!isOpen) {
       return;
@@ -28,22 +34,34 @@ export function SiteHeader() {
 
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") {
-        setIsOpen(false);
-        window.requestAnimationFrame(() => menuButtonRef.current?.focus());
+        closeMobileMenu(true);
       }
     };
 
     document.addEventListener("keydown", handleKeyDown);
     return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [closeMobileMenu, isOpen]);
+
+  useEffect(() => {
+    if (!isOpen) {
+      return;
+    }
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
   }, [isOpen]);
 
   return (
-    <header className="sticky top-0 z-40 border-b border-line bg-white/95 shadow-sm backdrop-blur">
-      <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3 sm:px-6 lg:px-8">
+    <header className="site-header sticky top-0 z-40 border-b border-brand-blue/10 bg-white/95 shadow-sm transition-all duration-200">
+      <div className="h-0.5 bg-gradient-to-r from-brand-blue via-brand-blue-link to-[#2d9c95]" />
+      <div className="mx-auto flex h-[70px] max-w-7xl items-center justify-between gap-4 px-4 transition-all duration-200 sm:px-6 lg:h-[76px] lg:px-8 xl:grid xl:grid-cols-[minmax(250px,290px)_1fr_auto] xl:gap-6">
         <BrandLogo />
 
         <nav
-          className="hidden items-center gap-1 text-sm font-semibold text-slate-700 xl:flex"
+          className="hidden items-center justify-center gap-1 text-[16px] font-semibold text-slate-700 xl:flex"
           aria-label="Primary navigation"
         >
           {navItems.map((item) => {
@@ -54,30 +72,36 @@ export function SiteHeader() {
                 key={item.href}
                 href={item.href}
                 aria-current={active ? "page" : undefined}
-                className={`relative rounded-md px-3 py-2 transition-colors duration-200 after:absolute after:inset-x-3 after:bottom-1 after:h-0.5 after:origin-left after:rounded-full after:bg-brand-red after:transition-transform after:duration-200 hover:bg-brand-blue-soft hover:text-brand-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red ${
+                className={`nav-link motion-button relative inline-flex min-h-11 items-center rounded-md px-3.5 py-2 transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red ${
                   active
-                    ? "bg-brand-blue-soft text-brand-blue after:scale-x-100"
-                    : "text-slate-700 after:scale-x-0"
+                    ? "nav-link--active bg-brand-blue-soft text-brand-blue"
+                    : "text-slate-700 hover:bg-brand-blue-soft hover:text-brand-blue"
                 }`}
               >
                 {item.label}
               </Link>
             );
           })}
-          <div className="ml-2">
-            <LinkButton href="/volunteer" variant="secondary">
-              Join Us
-            </LinkButton>
-          </div>
+        </nav>
+
+        <div className="hidden items-center justify-end gap-3 xl:flex">
+          <Link
+            href="/volunteer"
+            className="group motion-button inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-brand-blue bg-brand-blue px-5 py-2.5 text-sm font-bold text-white shadow-sm transition hover:bg-brand-blue-strong hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red"
+          >
+            Join Us
+            <ArrowRight className="h-4 w-4 transition group-hover:translate-x-0.5" aria-hidden="true" />
+          </Link>
           <button
             type="button"
             disabled
-            className="ml-1 min-h-11 cursor-not-allowed rounded-md border border-line bg-muted px-3 py-2 text-xs font-semibold text-brand-blue opacity-90"
-            title="Chinese language content is coming soon"
+            aria-disabled="true"
+            className="min-h-11 cursor-not-allowed rounded-md border border-line bg-muted px-3 py-2 text-xs font-semibold text-slate-600 opacity-90"
+            title="Chinese-language support is planned for a future release"
           >
             中文即将上线
           </button>
-        </nav>
+        </div>
 
         <button
           type="button"
@@ -108,10 +132,10 @@ export function SiteHeader() {
       {isOpen ? (
         <nav
           id="mobile-navigation"
-          className="animate-mobile-menu-in border-t border-line bg-white px-4 py-3 shadow-sm sm:px-6 xl:hidden"
+          className="animate-mobile-menu-in border-t border-line bg-white px-4 py-4 shadow-md sm:px-6 xl:hidden"
           aria-label="Mobile navigation"
         >
-          <div className="mx-auto grid max-w-7xl gap-1">
+          <div className="mx-auto grid max-w-7xl gap-2">
             {navItems.map((item) => {
               const active = isActivePath(pathname, item.href);
 
@@ -120,10 +144,10 @@ export function SiteHeader() {
                   key={item.href}
                   href={item.href}
                   aria-current={active ? "page" : undefined}
-                  onClick={() => setIsOpen(false)}
-                  className={`rounded-md px-3 py-3 text-sm font-semibold transition hover:bg-brand-blue-soft hover:text-brand-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red ${
+                  onClick={() => closeMobileMenu(true)}
+                  className={`nav-link relative rounded-md px-3 py-3 text-sm font-semibold transition hover:bg-brand-blue-soft hover:text-brand-blue focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red ${
                     active
-                      ? "bg-brand-blue-soft text-brand-blue"
+                      ? "nav-link--active bg-brand-blue-soft text-brand-blue"
                       : "text-slate-700"
                   }`}
                 >
@@ -133,16 +157,18 @@ export function SiteHeader() {
             })}
             <Link
               href="/volunteer"
-              onClick={() => setIsOpen(false)}
-              className="mt-2 rounded-md border border-brand-blue bg-brand-blue px-3 py-3 text-center text-sm font-semibold text-white transition hover:bg-brand-blue-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red"
+              onClick={() => closeMobileMenu(true)}
+              className="motion-button mt-2 inline-flex min-h-12 items-center justify-center gap-2 rounded-md border border-brand-blue bg-brand-blue px-3 py-3 text-center text-sm font-bold text-white shadow-sm transition hover:bg-brand-blue-strong focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red"
             >
               Join Us
+              <ArrowRight className="h-4 w-4" aria-hidden="true" />
             </Link>
             <button
               type="button"
               disabled
-              className="mt-2 min-h-11 cursor-not-allowed rounded-md border border-line bg-muted px-3 py-2 text-sm font-semibold text-brand-blue"
-              title="Chinese language content is coming soon"
+              aria-disabled="true"
+              className="mt-2 min-h-11 cursor-not-allowed rounded-md border border-line bg-muted px-3 py-2 text-sm font-semibold text-slate-600"
+              title="Chinese-language support is planned for a future release"
             >
               中文即将上线
             </button>

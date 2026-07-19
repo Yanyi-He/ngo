@@ -1,5 +1,6 @@
 import { chatbotContent } from "@/lib/content";
 import { ChatbotResponseSkeleton } from "@/components/skeletons/chatbot-response-skeleton";
+import { Bot, RotateCcw, Send, ShieldCheck } from "lucide-react";
 import {
   Button,
   Container,
@@ -37,7 +38,7 @@ export default function ChatbotPage() {
                 official sources or a qualified professional.
               </Notice>
 
-              <section className="rounded-md border border-line bg-white p-6">
+              <section className="card-surface rounded-md border border-line bg-white p-6 shadow-sm">
                 <h2 className="text-xl font-semibold text-brand-blue">Topics</h2>
                 <ul className="mt-5 grid gap-3">
                   {chatbotContent.topics.map((topic) => (
@@ -47,18 +48,43 @@ export default function ChatbotPage() {
                   ))}
                 </ul>
               </section>
-            </aside>
 
-            <section className="rounded-md border border-line bg-white">
-              <div className="border-b border-line p-5">
-                <h2 className="text-xl font-semibold text-brand-blue">
-                  COAN information assistant
+              <section className="notice-surface rounded-md border border-brand-blue/20 bg-brand-blue-soft p-6">
+                <ShieldCheck className="h-6 w-6 text-brand-blue" aria-hidden="true" />
+                <h2 className="mt-3 text-base font-semibold text-brand-blue">
+                  Preview status
                 </h2>
                 <p className="mt-2 text-sm leading-6 text-slate-700">
-                  Ask one practical question at a time. COAN’s assistant is
-                  designed to encourage careful reading, official-source
-                  verification, and respectful use of community information.
+                  This page shows the intended public-service interface. Live
+                  backend responses should connect only after source retrieval,
+                  consent logging, and safety handling are ready.
                 </p>
+              </section>
+            </aside>
+
+            <section className="card-surface rounded-md border border-line bg-white shadow-sm">
+              <div className="flex flex-col gap-4 border-b border-line p-5 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <div className="flex items-center gap-3">
+                    <span className="flex h-10 w-10 items-center justify-center rounded-md bg-brand-blue text-white">
+                      <Bot className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                    <h2 className="text-xl font-semibold text-brand-blue">
+                      COAN information assistant
+                    </h2>
+                  </div>
+                  <p className="mt-3 text-sm leading-6 text-slate-700">
+                    Ask one practical question at a time. The assistant is a
+                    source-oriented preview for general newcomer information.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  className="motion-button inline-flex min-h-11 items-center justify-center gap-2 rounded-md border border-line bg-white px-4 py-2 text-sm font-semibold text-brand-blue hover:bg-brand-blue-soft focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-red"
+                >
+                  <RotateCcw className="h-4 w-4" aria-hidden="true" />
+                  Reset
+                </button>
               </div>
 
               <div className="grid gap-5 p-5">
@@ -81,6 +107,9 @@ export default function ChatbotPage() {
 
                 <div className="chatbot-preview rounded-md border border-line bg-muted p-5" data-state="active">
                   <StatusBadge>Source-oriented answer example</StatusBadge>
+                  <div className="chatbot-preview__message chatbot-preview__message--user mt-4 rounded-md bg-white p-4 text-sm font-medium text-brand-blue shadow-sm">
+                    How can I avoid rental scams in Ontario?
+                  </div>
                   <p className="chatbot-preview__message chatbot-preview__message--assistant mt-3 text-sm leading-6 text-slate-800">
                     {chatbotContent.exampleAnswer}
                   </p>
@@ -118,9 +147,19 @@ export default function ChatbotPage() {
                     to storing this chat for service improvement.
                   </label>
                   <div className="mt-5">
-                    <Button>Send question</Button>
+                    <Button>
+                      <span className="inline-flex items-center gap-2">
+                        <Send className="h-4 w-4" aria-hidden="true" />
+                        Send question
+                      </span>
+                    </Button>
                   </div>
                 </form>
+                <Notice title="Unavailable state" tone="warning">
+                  If the assistant is offline or retrieval fails, the interface
+                  should explain that answers are temporarily unavailable and
+                  route users to resources, events, or qualified support.
+                </Notice>
               </div>
             </section>
           </div>
